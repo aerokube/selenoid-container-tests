@@ -2,6 +2,7 @@ package com.aerokube.selenoid.misc;
 
 import org.junit.Assert;
 import org.junit.Rule;
+import org.junit.rules.Timeout;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 public abstract class TestBase {
@@ -19,6 +21,9 @@ public abstract class TestBase {
     
     @Rule
     public WebDriverRule webDriverRule;
+    
+    @Rule
+    public Timeout timeout = new Timeout(10, TimeUnit.SECONDS);
     
     public TestBase() {
         this.webDriverRule = new WebDriverRule(getCapabilitiesProcessor());
