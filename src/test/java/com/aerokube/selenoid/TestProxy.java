@@ -1,5 +1,6 @@
 package com.aerokube.selenoid;
 
+import com.aerokube.selenoid.misc.Page;
 import com.aerokube.selenoid.misc.TestBase;
 import net.lightbody.bmp.BrowserMobProxy;
 import net.lightbody.bmp.BrowserMobProxyServer;
@@ -10,8 +11,6 @@ import org.openqa.selenium.Proxy;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import ru.yandex.qatools.allure.annotations.Features;
-import com.aerokube.selenoid.misc.JettyRule;
-import com.aerokube.selenoid.misc.Page;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +90,7 @@ public class TestProxy extends TestBase {
     }
 
     private String getProxyString() {
-        return String.format("%s:%d", JettyRule.getHostName(), proxy.getPort());
+        return String.format("%s:%d", getHostName(), proxy.getPort());
     }
     
 }

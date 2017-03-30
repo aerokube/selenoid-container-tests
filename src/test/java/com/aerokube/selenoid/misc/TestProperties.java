@@ -5,6 +5,10 @@ import ru.qatools.properties.Property;
 
 interface TestProperties {
 
+    @Property("pages.base.url")
+    @DefaultValue("http://vania-pooh.github.io/selenoid-container-tests/pages/")
+    String getBaseUrl();
+    
     @Property("grid.auth.login")
     String getLogin();
 

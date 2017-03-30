@@ -9,6 +9,7 @@ import ru.qatools.properties.PropertyLoader;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 public class WebDriverRule extends ExternalResource {
@@ -26,22 +27,25 @@ public class WebDriverRule extends ExternalResource {
     @Override
     protected void before() throws Throwable {
         driver = new RemoteWebDriver(getConnectionUrl(), capabilitiesProcessor.apply(getDesiredCapabilities()));
+        driver.manage().timeouts().pageLoadTimeout(5, TimeUnit.SECONDS);
     }
     
     private URL getConnectionUrl() throws MalformedURLException {
-        return areLoginAndPasswordPresent() ?
-                new URL(String.format(
-                    "http://%s:%s@%s:%s/wd/hub",
-                    PROPERTIES.getLogin(),
-                    PROPERTIES.getPassword(),
-                    PROPERTIES.getHostName(),
-                    PROPERTIES.getHostPort()
-                )) : 
-                new URL(String.format(
-                        "http://%s:%s/wd/hub",
-                        PROPERTIES.getHostName(),
-                        PROPERTIES.getHostPort()
-                ));
+        return new URL(
+                areLoginAndPasswordPresent() ?
+                        String.format(
+                                "http://%s:%s@%s:%s/wd/hub",
+                                PROPERTIES.getLogin(),
+                                PROPERTIES.getPassword(),
+                                PROPERTIES.getHostName(),
+                                PROPERTIES.getHostPort()
+                        ) :
+                        String.format(
+                                "http://%s:%s/wd/hub",
+                                PROPERTIES.getHostName(),
+                                PROPERTIES.getHostPort()
+                        )
+        );
     }
     
     private boolean areLoginAndPasswordPresent() {
@@ -68,4 +72,7 @@ public class WebDriverRule extends ExternalResource {
         return driver;
     }
 
+    String getPageUrl(Page page) {
+        return String.format("%s/%s", PROPERTIES.getBaseUrl(), page.getName());
+    }
 }
