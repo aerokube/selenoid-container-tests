@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>hotkeys</title>
+    <script type="text/javascript">
+        document.onkeydown = function(e) {
+            if (e.ctrlKey && String.fromCharCode(e.keyCode).toLowerCase() == 'c') {
+                document.getElementById('test-id').innerHTML = 'new';
+            }
+        };
+    </script>
+</head>
+<body>
+    <h1>Hotkeys Page</h1>
+    <div id="test-id">initial</div>
+</body>
+</html>
