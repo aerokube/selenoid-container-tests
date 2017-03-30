@@ -10,6 +10,10 @@ import org.slf4j.LoggerFactory;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 public abstract class TestBase {
@@ -33,7 +37,19 @@ public abstract class TestBase {
     public void openPage(Page page) throws Exception {
         String pageUrl = getPageUrl(page);
         LOG.info(String.format("Opening page at: %s", pageUrl));
-        getDriver().get(pageUrl);
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        try {
+            Future<?> future = executor.submit(() -> {
+                getDriver().get(pageUrl);
+            });
+            future.get(10, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            LOG.info(String.format("Failed to open page at: %s", pageUrl));
+        } finally {
+            if (!executor.isTerminated()) {
+                executor.shutdownNow();
+            }
+        }
     }
 
     private String getPageUrl(Page page) throws Exception {
