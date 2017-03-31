@@ -5,15 +5,22 @@ import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.qatools.properties.PropertyLoader;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 public class WebDriverRule extends ExternalResource {
 
+    private static final Logger LOG = LoggerFactory.getLogger(WebDriverRule.class);
+    
     private static final TestProperties PROPERTIES = PropertyLoader.newInstance().populate(TestProperties.class);
     
     private WebDriver driver;
@@ -62,9 +69,17 @@ public class WebDriverRule extends ExternalResource {
     
     @Override
     protected void after() {
-        if (driver != null) {
-            driver.quit();
-            driver = null;
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        Future<?> future = executorService.submit(() -> {
+            if (driver != null) {
+                driver.quit();
+                driver = null;
+            }
+        });
+        try {
+            future.get(5, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            LOG.info("Deleting session timed out");
         }
     }
 
