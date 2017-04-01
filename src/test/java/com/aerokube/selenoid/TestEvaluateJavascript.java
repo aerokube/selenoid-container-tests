@@ -53,9 +53,9 @@ public class TestEvaluateJavascript extends TestBase {
 
             JavascriptExecutor javaScriptExecutor = (JavascriptExecutor) driver;
             driver.manage().timeouts().setScriptTimeout(1000, TimeUnit.MILLISECONDS);
-            javaScriptExecutor.executeAsyncScript(getAsyncScript());
-            Thread.sleep(1000);
+            String result = String.valueOf(javaScriptExecutor.executeAsyncScript(getAsyncScript()));
             assertThat(element.getText(), equalTo("baz"));
+            assertThat(result, equalTo("works"));
         } catch (Exception e) {
             fail("Asynchronous javascript execution is not supported");
         }
@@ -78,7 +78,9 @@ public class TestEvaluateJavascript extends TestBase {
     }
     
     private String getAsyncScript() {
-        return "var div = document.getElementById('test-id'); div.textContent = 'baz';";
+        return "var callback = arguments[arguments.length - 1];" +
+                " var div = document.getElementById('test-id');" +
+                " div.textContent = 'baz'; callback('works');";
     }
     
 }
