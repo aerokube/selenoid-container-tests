@@ -2,6 +2,8 @@ package com.aerokube.selenoid.misc;
 
 import org.junit.Assert;
 import org.junit.Rule;
+import org.junit.rules.RuleChain;
+import org.junit.rules.TestRule;
 import org.junit.rules.Timeout;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -18,15 +20,17 @@ import java.util.function.Function;
 public abstract class TestBase {
 
     private static final Logger LOG = LoggerFactory.getLogger(TestBase.class);
-    
+
     @Rule
-    public WebDriverRule webDriverRule;
+    public  TestRule chain;
     
-    @Rule
-    public Timeout timeout = new Timeout(10, TimeUnit.SECONDS);
+    private Timeout timeout;
+    private WebDriverRule webDriverRule;
     
     public TestBase() {
         this.webDriverRule = new WebDriverRule(getCapabilitiesProcessor());
+        this.timeout = new Timeout(30, TimeUnit.SECONDS);
+        this.chain = RuleChain.outerRule(timeout).around(webDriverRule);
     }
 
     public WebDriver getDriver() {
