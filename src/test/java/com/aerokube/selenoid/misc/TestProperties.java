@@ -9,19 +9,9 @@ interface TestProperties {
     @DefaultValue("http://aerokube.github.io/selenoid-container-tests/pages")
     String getBaseUrl();
     
-    @Property("grid.auth.login")
-    String getLogin();
-
-    @Property("grid.auth.password")
-    String getPassword();
-
-    @Property("grid.host.name")
-    @DefaultValue("localhost")
-    String getHostName();
-
-    @Property("grid.host.port")
-    @DefaultValue("4444")
-    Integer getHostPort();
+    @Property("grid.connection.url")
+    @DefaultValue("http://localhost:4444/wd/hub")
+    String getConnectionUrl();
 
     @Property("grid.browser.name")
     @DefaultValue("firefox")

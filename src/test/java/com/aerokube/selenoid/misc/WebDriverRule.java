@@ -53,27 +53,7 @@ public class WebDriverRule implements TestRule {
     }
     
     private URL getConnectionUrl() throws MalformedURLException {
-        return new URL(
-                areLoginAndPasswordPresent() ?
-                        String.format(
-                                "http://%s:%s@%s:%s/wd/hub",
-                                PROPERTIES.getLogin(),
-                                PROPERTIES.getPassword(),
-                                PROPERTIES.getHostName(),
-                                PROPERTIES.getHostPort()
-                        ) :
-                        String.format(
-                                "http://%s:%s/wd/hub",
-                                PROPERTIES.getHostName(),
-                                PROPERTIES.getHostPort()
-                        )
-        );
-    }
-    
-    private boolean areLoginAndPasswordPresent() {
-        String login = PROPERTIES.getLogin();
-        String password = PROPERTIES.getPassword();
-        return login != null && !login.isEmpty() && password != null && !password.isEmpty();
+        return new URL(PROPERTIES.getConnectionUrl());
     }
 
     private DesiredCapabilities getDesiredCapabilities() {
