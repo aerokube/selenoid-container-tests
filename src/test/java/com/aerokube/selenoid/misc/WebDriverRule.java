@@ -58,7 +58,7 @@ public class WebDriverRule implements TestRule {
 
     private DesiredCapabilities getDesiredCapabilities() {
         DesiredCapabilities caps = new DesiredCapabilities(PROPERTIES.getBrowserName(), PROPERTIES.getBrowserVersion(), Platform.LINUX);
-        caps.setCapability("screenResolution", "1280x1024");
+        caps.setCapability("screenResolution", "1280x1024x24");
         return caps;
     }
 
