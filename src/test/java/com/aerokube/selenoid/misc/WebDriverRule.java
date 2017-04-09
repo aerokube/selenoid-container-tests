@@ -15,12 +15,14 @@ import ru.yandex.qatools.allure.annotations.Attachment;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 public class WebDriverRule implements TestRule {
     
     private static final TestProperties PROPERTIES = PropertyLoader.newInstance().populate(TestProperties.class);
+    private static final String OPERA_BLINK = "operablink";
     
     private WebDriver driver;
     
@@ -59,6 +61,13 @@ public class WebDriverRule implements TestRule {
     private DesiredCapabilities getDesiredCapabilities() {
         DesiredCapabilities caps = new DesiredCapabilities(PROPERTIES.getBrowserName(), PROPERTIES.getBrowserVersion(), Platform.LINUX);
         caps.setCapability("screenResolution", "1280x1024x24");
+        if (OPERA_BLINK.equals(PROPERTIES.getBrowserName())) {
+            caps.setCapability("operaOptions", new HashMap<String, Object>(){
+                {
+                    put("binary", "/usr/bin/opera");
+                }
+            });
+        }
         return caps;
     }
 
