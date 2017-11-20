@@ -22,7 +22,7 @@ import java.util.function.Function;
 public class WebDriverRule implements TestRule {
     
     private static final TestProperties PROPERTIES = PropertyLoader.newInstance().populate(TestProperties.class);
-    private static final String OPERA_BLINK = "operablink";
+    private static final String OPERA = "opera";
     
     private WebDriver driver;
     
@@ -61,7 +61,7 @@ public class WebDriverRule implements TestRule {
     private DesiredCapabilities getDesiredCapabilities() {
         DesiredCapabilities caps = new DesiredCapabilities(PROPERTIES.getBrowserName(), PROPERTIES.getBrowserVersion(), Platform.LINUX);
         caps.setCapability("screenResolution", "1280x1024x24");
-        if (OPERA_BLINK.equals(PROPERTIES.getBrowserName())) {
+        if (OPERA.equals(PROPERTIES.getBrowserName())) {
             caps.setCapability("operaOptions", new HashMap<String, Object>(){
                 {
                     put("binary", "/usr/bin/opera");
