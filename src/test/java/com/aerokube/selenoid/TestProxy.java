@@ -73,8 +73,7 @@ public class TestProxy extends TestBase {
                 .setProxyType(Proxy.ProxyType.MANUAL)
                 .setHttpProxy(proxyString)
                 .setFtpProxy(proxyString)
-                .setSslProxy(proxyString)
-                .setNoProxy("");
+                .setSslProxy(proxyString);
 
         if (caps.getBrowserName().contains("chrome")) {
             @SuppressWarnings("unchecked")

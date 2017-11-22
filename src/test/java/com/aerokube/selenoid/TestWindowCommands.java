@@ -3,6 +3,7 @@ package com.aerokube.selenoid;
 import com.aerokube.selenoid.misc.Page;
 import com.aerokube.selenoid.misc.TestBase;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.*;
 import ru.yandex.qatools.allure.annotations.Features;
@@ -87,6 +88,7 @@ public class TestWindowCommands extends TestBase {
     }
     
     @Features("Screen orientation support")
+    @Ignore
     @Test
     public void testScreenOrientation() {
         try {
