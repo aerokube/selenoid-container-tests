@@ -4,6 +4,7 @@ import com.aerokube.selenoid.misc.Page;
 import com.aerokube.selenoid.misc.TestBase;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import ru.yandex.qatools.allure.annotations.Features;
 
@@ -15,6 +16,7 @@ public class TestTimeouts extends TestBase {
     @Before
     public void before() throws Exception {
         openPage(Page.FIRST);
+        waitUntilElementIsPresent(By.id("test-id"));
     }
 
     @Features("Setting page load timeout")
@@ -27,7 +29,7 @@ public class TestTimeouts extends TestBase {
         } catch (Exception e) {
             fail("Setting page load timeout is not supported", e);
         }
-    }    
+    }
     
     @Features("Setting implicit timeout")
     @Test
@@ -38,7 +40,7 @@ public class TestTimeouts extends TestBase {
         } catch (Exception e) {
             fail("Implicitly waiting is not supported", e);
         }
-    }    
+    }
     
     @Features("Setting script execution timeout")
     @Test
@@ -49,5 +51,5 @@ public class TestTimeouts extends TestBase {
         } catch (Exception e) {
             fail("Setting script timeout is not supported", e);
         }
-    }    
+    }
 }

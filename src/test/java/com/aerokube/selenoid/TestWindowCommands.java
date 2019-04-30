@@ -21,13 +21,20 @@ public class TestWindowCommands extends TestBase {
     @Before
     public void before() throws Exception {
         openPage(Page.FIRST);
+        waitUntilElementIsPresent(By.id("test-id"));
     }
-
+    
+    @Features("Closing window")
     @Test
     public void testWindowCloseIsSupported() throws Exception {
         try {
-            Thread.sleep(1000);
+            WebDriver driver = getDriver();
+            WebElement link = driver.findElement(By.id("test-link")); //This link opens new window
+            link.click();
+            waitUntilElementIsPresent(By.id("test-id"));
+            assertThat(driver.getWindowHandles(), hasSize(2));
             getDriver().close();
+            assertThat(driver.getWindowHandles(), hasSize(1));
         } catch (Exception e) {
             fail("WebDriver.close() is not supported", e);
         }
@@ -40,6 +47,7 @@ public class TestWindowCommands extends TestBase {
             WebDriver driver = getDriver();
             WebElement link = driver.findElement(By.id("test-link")); //This link opens new window
             link.click();
+            waitUntilElementIsPresent(By.id("test-id"));
             Set<String> windowHandles = driver.getWindowHandles();
             assertThat(windowHandles, hasSize(2));
             List<String> windowNames = windowHandles.stream().map(wh -> {

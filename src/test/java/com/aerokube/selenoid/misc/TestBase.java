@@ -5,8 +5,11 @@ import org.junit.Rule;
 import org.junit.rules.RuleChain;
 import org.junit.rules.TestRule;
 import org.junit.rules.Timeout;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +40,10 @@ public abstract class TestBase {
         return webDriverRule.getDriver();
     }
     
+    public void waitUntilElementIsPresent(By by) {
+        new WebDriverWait(getDriver(), 5).until(ExpectedConditions.presenceOfElementLocated(by));
+    }
+    
     public void openPage(Page page) throws Exception {
         String pageUrl = webDriverRule.getPageUrl(page);
         LOG.info(String.format("Opening page at: %s", pageUrl));
@@ -60,9 +67,13 @@ public abstract class TestBase {
         return Function.identity();
     }
 
-    protected String getHostName() {
+    protected String getLocalHost() {
         try {
-            return InetAddress.getLocalHost().getHostName();
+            if(System.getProperty("os.name").startsWith("Mac")) {
+                return InetAddress.getLocalHost().getHostAddress();
+            } else {
+                return InetAddress.getLocalHost().getHostName();
+            }
         } catch (UnknownHostException e) {
             LOG.error("Failed to determine host name");
             return "localhost";

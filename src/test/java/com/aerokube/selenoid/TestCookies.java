@@ -4,6 +4,7 @@ import com.aerokube.selenoid.misc.Page;
 import com.aerokube.selenoid.misc.TestBase;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
 import ru.yandex.qatools.allure.annotations.Features;
@@ -17,6 +18,7 @@ public class TestCookies extends TestBase {
     @Before
     public void before() throws Exception {
         openPage(Page.FIRST);
+        waitUntilElementIsPresent(By.id("test-id"));
     }
 
     @Features("Working with cookies")
