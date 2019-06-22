@@ -7,6 +7,8 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.opera.OperaOptions;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -22,6 +24,7 @@ import java.util.function.Function;
 public class WebDriverRule implements TestRule {
     
     private static final TestProperties PROPERTIES = PropertyLoader.newInstance().populate(TestProperties.class);
+    private static final String CHROME = "chrome";
     private static final String OPERA = "opera";
     
     private WebDriver driver;
@@ -61,12 +64,16 @@ public class WebDriverRule implements TestRule {
     private DesiredCapabilities getDesiredCapabilities() {
         DesiredCapabilities caps = new DesiredCapabilities(PROPERTIES.getBrowserName(), PROPERTIES.getBrowserVersion(), Platform.LINUX);
         caps.setCapability("screenResolution", "1280x1024x24");
+        if (CHROME.equals(PROPERTIES.getBrowserName())) {
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("no-sandbox");
+            caps.setCapability(ChromeOptions.CAPABILITY, options);
+        }
         if (OPERA.equals(PROPERTIES.getBrowserName())) {
-            caps.setCapability("operaOptions", new HashMap<String, Object>(){
-                {
-                    put("binary", "/usr/bin/opera");
-                }
-            });
+            OperaOptions operaOptions = new OperaOptions();
+            operaOptions.setBinary("/usr/bin/opera");
+            operaOptions.addArguments("no-sandbox");
+            caps.setCapability(OperaOptions.CAPABILITY, operaOptions);
         }
         return caps;
     }

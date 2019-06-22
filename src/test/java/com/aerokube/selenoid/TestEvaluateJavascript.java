@@ -20,6 +20,7 @@ public class TestEvaluateJavascript extends TestBase {
     @Before
     public void before() throws Exception {
         openPage(Page.FIRST);
+        waitUntilElementIsPresent(By.id("test-id"));
         WebDriver driver = getDriver();
         assertThat("Javascript execution is not supported", driver, is(instanceOf(JavascriptExecutor.class)));
     }

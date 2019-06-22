@@ -18,6 +18,7 @@ public class TestDrag extends TestBase {
     @Before
     public void before() throws Exception {
         openPage(Page.DRAG);
+        waitUntilElementIsPresent(By.id("custom-handle"));
     }
 
     @Features("Drag functionality")

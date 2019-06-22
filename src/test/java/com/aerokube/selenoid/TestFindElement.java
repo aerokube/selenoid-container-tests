@@ -23,6 +23,7 @@ public class TestFindElement extends TestBase {
     @Before
     public void before() throws Exception {
         openPage(Page.FIRST);
+        waitUntilElementIsPresent(By.id("test-id"));
     }
 
     @Features("Finding element by CSS selector")

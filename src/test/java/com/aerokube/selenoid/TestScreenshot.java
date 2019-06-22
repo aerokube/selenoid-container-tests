@@ -3,6 +3,7 @@ package com.aerokube.selenoid;
 import com.aerokube.selenoid.misc.TestBase;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -16,6 +17,7 @@ public class TestScreenshot extends TestBase {
     @Before
     public void before() throws Exception {
         openPage(Page.FIRST);
+        waitUntilElementIsPresent(By.id("test-id"));
     }
 
     @Features("Taking screenshots")

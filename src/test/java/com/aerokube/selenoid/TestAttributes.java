@@ -17,6 +17,7 @@ public class TestAttributes extends TestBase {
     @Before
     public void before() throws Exception {
         openPage(Page.SECOND);
+        waitUntilElementIsPresent(By.id("test-id"));
     }
 
     @Features("Capability to get element attributes")

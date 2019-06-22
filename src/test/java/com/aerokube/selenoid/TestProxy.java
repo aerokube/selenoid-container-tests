@@ -72,12 +72,11 @@ public class TestProxy extends TestBase {
         proxy
                 .setProxyType(Proxy.ProxyType.MANUAL)
                 .setHttpProxy(proxyString)
-                .setFtpProxy(proxyString)
-                .setSslProxy(proxyString);
+                .setFtpProxy(proxyString);
 
         if (caps.getBrowserName().contains("chrome")) {
             @SuppressWarnings("unchecked")
-            List<String> switches = caps.getCapability("chrome.switches") != null ? 
+            List<String> switches = caps.getCapability("chrome.switches") != null ?
                     (List<String>) caps.getCapability("chrome.switches") :
                     new ArrayList<>();
             switches.add("--proxy-server=" + proxyString);
@@ -89,7 +88,7 @@ public class TestProxy extends TestBase {
     }
 
     private String getProxyString() {
-        return String.format("%s:%d", getHostName(), proxy.getPort());
+        return String.format("%s:%d", getLocalHost(), proxy.getPort());
     }
     
 }

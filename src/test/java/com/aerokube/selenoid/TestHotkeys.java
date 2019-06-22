@@ -18,6 +18,7 @@ public class TestHotkeys extends TestBase {
     @Before
     public void before() throws Exception {
         openPage(Page.HOTKEYS);
+        waitUntilElementIsPresent(By.id("test-id"));
     }
 
     @Features("Pressing keys on the keyboard")
