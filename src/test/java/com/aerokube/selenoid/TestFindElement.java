@@ -2,7 +2,6 @@ package com.aerokube.selenoid;
 
 import com.aerokube.selenoid.misc.Page;
 import com.aerokube.selenoid.misc.TestBase;
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;

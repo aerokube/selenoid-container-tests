@@ -9,9 +9,9 @@ import org.openqa.selenium.*;
 import ru.yandex.qatools.allure.annotations.Features;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.awaitility.Awaitility.await;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
@@ -31,10 +31,9 @@ public class TestWindowCommands extends TestBase {
             WebDriver driver = getDriver();
             WebElement link = driver.findElement(By.id("test-link")); //This link opens new window
             link.click();
-            waitUntilElementIsPresent(By.id("test-id"));
-            assertThat(driver.getWindowHandles(), hasSize(2));
+            await().until(() -> getDriver().getWindowHandles().size() == 2);
             getDriver().close();
-            assertThat(driver.getWindowHandles(), hasSize(1));
+            await().until(() -> getDriver().getWindowHandles().size() == 1);
         } catch (Exception e) {
             fail("WebDriver.close() is not supported", e);
         }
@@ -47,10 +46,8 @@ public class TestWindowCommands extends TestBase {
             WebDriver driver = getDriver();
             WebElement link = driver.findElement(By.id("test-link")); //This link opens new window
             link.click();
-            waitUntilElementIsPresent(By.id("test-id"));
-            Set<String> windowHandles = driver.getWindowHandles();
-            assertThat(windowHandles, hasSize(2));
-            List<String> windowNames = windowHandles.stream().map(wh -> {
+            await().until(() -> getDriver().getWindowHandles().size() == 2);
+            List<String> windowNames = getDriver().getWindowHandles().stream().map(wh -> {
                 driver.switchTo().window(wh);
                 return driver.getTitle();
             }).collect(Collectors.toList());
