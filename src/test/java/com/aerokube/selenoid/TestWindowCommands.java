@@ -46,10 +46,10 @@ public class TestWindowCommands extends TestBase {
             WebDriver driver = getDriver();
             WebElement link = driver.findElement(By.id("test-link")); //This link opens new window
             link.click();
-            await().until(() -> getDriver().getWindowHandles().size() == 2);
-            List<String> windowNames = getDriver().getWindowHandles().stream().map(wh -> {
+            await().until(() -> driver.getWindowHandles().size() == 2);
+            List<String> windowNames = driver.getWindowHandles().stream().map(wh -> {
                 driver.switchTo().window(wh);
-                return driver.getTitle();
+                return getPageTitle();
             }).collect(Collectors.toList());
             assertThat(windowNames, containsInAnyOrder("first", "second"));
         } catch (Exception e) {
@@ -67,7 +67,7 @@ public class TestWindowCommands extends TestBase {
             driver.switchTo().frame(firstFrameElement);
             WebElement firstFrame = driver.switchTo().activeElement();
             assertThat(firstFrame.findElements(By.cssSelector("span.test-class")), hasSize(1));
-
+            
             driver.switchTo().defaultContent();
             WebElement secondFrameElement = driver.findElement(By.id("second"));
             driver.switchTo().frame(secondFrameElement);
@@ -83,13 +83,13 @@ public class TestWindowCommands extends TestBase {
     @Test
     public void testBackAndForward() throws Exception {
         WebDriver driver = getDriver();
-        assertThat(driver.getTitle(), equalTo("first"));
+        assertThat(getPageTitle(), equalTo("first"));
         openPage(Page.SECOND);
-        assertThat(driver.getTitle(), equalTo("second"));
+        assertThat(getPageTitle(), equalTo("second"));
         driver.navigate().back();
-        assertThat(driver.getTitle(), equalTo("first"));
+        assertThat(getPageTitle(), equalTo("first"));
         driver.navigate().forward();
-        assertThat(driver.getTitle(), equalTo("second"));
+        assertThat(getPageTitle(), equalTo("second"));
     }
     
     @Features("Screen orientation support")

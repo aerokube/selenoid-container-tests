@@ -21,11 +21,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 public abstract class TestBase {
-
+    
     private static final Logger LOG = LoggerFactory.getLogger(TestBase.class);
-
+    
     @Rule
-    public  TestRule chain;
+    public TestRule chain;
     
     private Timeout timeout;
     private WebDriverRule webDriverRule;
@@ -35,7 +35,7 @@ public abstract class TestBase {
         this.timeout = new Timeout(30, TimeUnit.SECONDS);
         this.chain = RuleChain.outerRule(timeout).around(webDriverRule);
     }
-
+    
     public WebDriver getDriver() {
         return webDriverRule.getDriver();
     }
@@ -44,12 +44,17 @@ public abstract class TestBase {
         new WebDriverWait(getDriver(), 5).until(ExpectedConditions.presenceOfElementLocated(by));
     }
     
+    public String getPageTitle() {
+        new WebDriverWait(getDriver(), 5).until(ExpectedConditions.not(ExpectedConditions.titleIs("")));
+        return getDriver().getTitle();
+    }
+    
     public void openPage(Page page) throws Exception {
         String pageUrl = webDriverRule.getPageUrl(page);
         LOG.info(String.format("Opening page at: %s", pageUrl));
         getDriver().get(pageUrl);
     }
-
+    
     public void fail(String message, Exception e) {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
@@ -66,10 +71,10 @@ public abstract class TestBase {
     protected Function<DesiredCapabilities, DesiredCapabilities> getCapabilitiesProcessor() {
         return Function.identity();
     }
-
+    
     protected String getLocalHost() {
         try {
-            if(System.getProperty("os.name").startsWith("Mac")) {
+            if (System.getProperty("os.name").startsWith("Mac")) {
                 return InetAddress.getLocalHost().getHostAddress();
             } else {
                 return InetAddress.getLocalHost().getHostName();
@@ -79,5 +84,5 @@ public abstract class TestBase {
             return "localhost";
         }
     }
-
+    
 }
