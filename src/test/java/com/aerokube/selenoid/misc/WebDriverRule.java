@@ -17,7 +17,6 @@ import ru.yandex.qatools.allure.annotations.Attachment;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
@@ -25,16 +24,17 @@ public class WebDriverRule implements TestRule {
     
     private static final TestProperties PROPERTIES = PropertyLoader.newInstance().populate(TestProperties.class);
     private static final String CHROME = "chrome";
+    private static final String YANDEX = "yandex";
     private static final String OPERA = "opera";
     
     private WebDriver driver;
     
     private final Function<DesiredCapabilities, DesiredCapabilities> capabilitiesProcessor;
-
+    
     WebDriverRule(Function<DesiredCapabilities, DesiredCapabilities> capabilitiesProcessor) {
         this.capabilitiesProcessor = capabilitiesProcessor;
     }
-
+    
     @Override
     public Statement apply(Statement base, Description description) {
         return new Statement() {
@@ -60,32 +60,42 @@ public class WebDriverRule implements TestRule {
     private URL getConnectionUrl() throws MalformedURLException {
         return new URL(PROPERTIES.getConnectionUrl());
     }
-
+    
     private DesiredCapabilities getDesiredCapabilities() {
         DesiredCapabilities caps = new DesiredCapabilities(PROPERTIES.getBrowserName(), PROPERTIES.getBrowserVersion(), Platform.LINUX);
         caps.setCapability("screenResolution", "1280x1024x24");
-        if (CHROME.equals(PROPERTIES.getBrowserName())) {
-            ChromeOptions options = new ChromeOptions();
-            options.addArguments("no-sandbox");
-            caps.setCapability(ChromeOptions.CAPABILITY, options);
-        }
-        if (OPERA.equals(PROPERTIES.getBrowserName())) {
-            OperaOptions operaOptions = new OperaOptions();
-            operaOptions.setBinary("/usr/bin/opera");
-            operaOptions.addArguments("no-sandbox");
-            caps.setCapability(OperaOptions.CAPABILITY, operaOptions);
+        switch (PROPERTIES.getBrowserName()) {
+            case CHROME:
+                ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions.addArguments("no-sandbox");
+                caps.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+                break;
+            case YANDEX:
+                ChromeOptions yandexOptions = new ChromeOptions();
+                yandexOptions.setBinary("/usr/bin/yandex-browser-beta");
+                yandexOptions.addArguments("no-sandbox");
+                caps.setCapability(ChromeOptions.CAPABILITY, yandexOptions);
+                break;
+            case OPERA:
+                OperaOptions operaOptions = new OperaOptions();
+                operaOptions.setBinary("/usr/bin/opera");
+                operaOptions.addArguments("no-sandbox");
+                caps.setCapability(OperaOptions.CAPABILITY, operaOptions);
+                break;
+            default:
+                break;
         }
         return caps;
     }
-
+    
     public WebDriver getDriver() {
         return driver;
     }
-
+    
     String getPageUrl(Page page) {
         return String.format("%s/%s", PROPERTIES.getBaseUrl(), page.getName());
     }
-
+    
     @Attachment("failure-screenshot")
     private byte[] takeScreenshot(WebDriver driver) {
         return ((TakesScreenshot) new Augmenter().augment(driver)).getScreenshotAs(OutputType.BYTES);
