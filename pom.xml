@@ -11,7 +11,7 @@
     <properties>
         <compiler.version>1.8</compiler.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <selenium.version>3.7.1</selenium.version>
+        <selenium.version>3.141.59</selenium.version>
         <properties.version>2.0.RC6</properties.version>
         <allure.version>1.5.2</allure.version>
         <junit.version>4.12</junit.version>
