@@ -7,6 +7,7 @@ import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.core.har.HarEntry;
 import net.lightbody.bmp.proxy.CaptureType;
 import org.junit.*;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -20,9 +21,9 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 public class TestProxy extends TestBase {
-    
+
     private static final BrowserMobProxy proxy = new BrowserMobProxyServer();
-    
+
     @BeforeClass
     public static void initProxy(){
         if (!proxy.isStarted()) {
@@ -30,14 +31,14 @@ public class TestProxy extends TestBase {
             proxy.setHarCaptureTypes(CaptureType.REQUEST_HEADERS);
         }
     }
-    
+
     @Before
     public void startHar(){
         if (proxy.isStarted()) {
             proxy.newHar();
         }
     }
-    
+
     @Features("Using proxies")
     @Test
     public void testProxy() throws Exception {
@@ -52,7 +53,7 @@ public class TestProxy extends TestBase {
             proxy.endHar();
         }
     }
-    
+
     @AfterClass
     public static void shutdownProxy() {
         if (proxy.isStarted()) {
@@ -61,11 +62,11 @@ public class TestProxy extends TestBase {
     }
 
     @Override
-    protected Function<DesiredCapabilities, DesiredCapabilities> getCapabilitiesProcessor() {
+    protected Function<MutableCapabilities, MutableCapabilities> getCapabilitiesProcessor() {
         return dc -> new DesiredCapabilities(dc, getProxyCapabilities(dc));
     }
 
-    private DesiredCapabilities getProxyCapabilities(DesiredCapabilities caps) {
+    private DesiredCapabilities getProxyCapabilities(MutableCapabilities caps) {
         DesiredCapabilities ret = new DesiredCapabilities();
         String proxyString = getProxyString();
         Proxy proxy = new Proxy();
@@ -82,7 +83,7 @@ public class TestProxy extends TestBase {
             switches.add("--proxy-server=" + proxyString);
             caps.setCapability("chrome.switches", switches);
         }
-        
+
         ret.setCapability(CapabilityType.PROXY, proxy);
         return ret;
     }
@@ -90,5 +91,5 @@ public class TestProxy extends TestBase {
     private String getProxyString() {
         return String.format("%s:%d", getLocalHost(), proxy.getPort());
     }
-    
+
 }
