@@ -17,7 +17,7 @@ public class TestScreenshot extends TestBase {
     @Before
     public void before() throws Exception {
         openPage(Page.FIRST);
-        waitUntilElementIsPresent(By.id("test-id"));
+        waitUntilElementIsPresent(By.cssSelector("#test-id"));
     }
 
     @Features("Taking screenshots")
@@ -30,11 +30,11 @@ public class TestScreenshot extends TestBase {
             fail("Screenshots are not supported", e);
         }
     }
-    
+
     @Attachment("screenshot")
     private byte[] takeScreenshot(WebDriver driver) {
         return ((TakesScreenshot) new Augmenter().augment(driver))
                 .getScreenshotAs(OutputType.BYTES);
     }
-    
+
 }

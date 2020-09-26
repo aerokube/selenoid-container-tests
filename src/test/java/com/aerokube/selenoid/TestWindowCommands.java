@@ -17,19 +17,19 @@ import static org.junit.Assert.assertThat;
 
 @Features("Miscellaneous window commands")
 public class TestWindowCommands extends TestBase {
-    
+
     @Before
     public void before() throws Exception {
         openPage(Page.FIRST);
-        waitUntilElementIsPresent(By.id("test-id"));
+        waitUntilElementIsPresent(By.cssSelector("#test-id"));
     }
-    
+
     @Features("Closing window")
     @Test
     public void testWindowCloseIsSupported() throws Exception {
         try {
             WebDriver driver = getDriver();
-            WebElement link = driver.findElement(By.id("test-link")); //This link opens new window
+            WebElement link = driver.findElement(By.cssSelector("#test-link")); //This link opens new window
             link.click();
             await().until(() -> getDriver().getWindowHandles().size() == 2);
             getDriver().close();
@@ -38,13 +38,13 @@ public class TestWindowCommands extends TestBase {
             fail("WebDriver.close() is not supported", e);
         }
     }
-    
+
     @Features("Switching between windows")
     @Test
     public void testSwitchWindows() throws Exception {
         try {
             WebDriver driver = getDriver();
-            WebElement link = driver.findElement(By.id("test-link")); //This link opens new window
+            WebElement link = driver.findElement(By.cssSelector("#test-link")); //This link opens new window
             link.click();
             await().until(() -> driver.getWindowHandles().size() == 2);
             List<String> windowNames = driver.getWindowHandles().stream().map(wh -> {
@@ -56,20 +56,20 @@ public class TestWindowCommands extends TestBase {
             fail("Switching between windows is not supported", e);
         }
     }
-    
+
     @Features("Switching between frames")
     @Test
     public void testSwitchFrames() throws Exception {
         try {
             openPage(Page.FRAMES);
             WebDriver driver = getDriver();
-            WebElement firstFrameElement = driver.findElement(By.id("first"));
+            WebElement firstFrameElement = driver.findElement(By.cssSelector("#first"));
             driver.switchTo().frame(firstFrameElement);
             WebElement firstFrame = driver.switchTo().activeElement();
             assertThat(firstFrame.findElements(By.cssSelector("span.test-class")), hasSize(1));
-            
+
             driver.switchTo().defaultContent();
-            WebElement secondFrameElement = driver.findElement(By.id("second"));
+            WebElement secondFrameElement = driver.findElement(By.cssSelector("#second"));
             driver.switchTo().frame(secondFrameElement);
             WebElement secondFrame = driver.switchTo().activeElement();
             assertThat(secondFrame.findElements(By.cssSelector("div#test-id")), hasSize(1));
@@ -78,7 +78,7 @@ public class TestWindowCommands extends TestBase {
             fail("Switching between frames is not supported", e);
         }
     }
-    
+
     @Features("Navigating back and forward")
     @Test
     public void testBackAndForward() throws Exception {
@@ -91,7 +91,7 @@ public class TestWindowCommands extends TestBase {
         driver.navigate().forward();
         assertThat(getPageTitle(), equalTo("second"));
     }
-    
+
     @Features("Screen orientation support")
     @Ignore
     @Test
@@ -108,5 +108,5 @@ public class TestWindowCommands extends TestBase {
             fail("This driver does not support rotation", e);
         }
     }
-    
+
 }

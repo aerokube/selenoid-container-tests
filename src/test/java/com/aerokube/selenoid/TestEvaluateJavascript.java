@@ -20,7 +20,7 @@ public class TestEvaluateJavascript extends TestBase {
     @Before
     public void before() throws Exception {
         openPage(Page.FIRST);
-        waitUntilElementIsPresent(By.id("test-id"));
+        waitUntilElementIsPresent(By.cssSelector("#test-id"));
         WebDriver driver = getDriver();
         assertThat("Javascript execution is not supported", driver, is(instanceOf(JavascriptExecutor.class)));
     }
@@ -42,7 +42,7 @@ public class TestEvaluateJavascript extends TestBase {
             fail("Synchronous javascript execution is not supported", e);
         }
     }
-    
+
     @Features("Asynchronous Javascript evaluation")
     @Test
     public void testEvaluateJavascriptAsync() throws Exception {
@@ -61,7 +61,7 @@ public class TestEvaluateJavascript extends TestBase {
             fail("Asynchronous javascript execution is not supported");
         }
     }
-    
+
     @Features("Window scrolling")
     @Test
     public void testScroll() throws Exception {
@@ -73,15 +73,15 @@ public class TestEvaluateJavascript extends TestBase {
             fail("Window scrolling is not supported", e);
         }
     }
-    
+
     private String getScript() {
         return "var div = document.getElementById('test-id'); div.textContent = 'bar';";
     }
-    
+
     private String getAsyncScript() {
         return "var callback = arguments[arguments.length - 1];" +
                 " var div = document.getElementById('test-id');" +
                 " div.textContent = 'baz'; callback('works');";
     }
-    
+
 }

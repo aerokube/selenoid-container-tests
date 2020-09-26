@@ -18,7 +18,7 @@ public class TestHotkeys extends TestBase {
     @Before
     public void before() throws Exception {
         openPage(Page.HOTKEYS);
-        waitUntilElementIsPresent(By.id("test-id"));
+        waitUntilElementIsPresent(By.cssSelector("#test-id"));
     }
 
     @Features("Pressing keys on the keyboard")
@@ -26,10 +26,10 @@ public class TestHotkeys extends TestBase {
     public void testHotkeys() {
         WebDriver driver = getDriver();
         String someKeys = Keys.chord(Keys.CONTROL, "c");
-        WebElement divTag = driver.findElement(By.id("test-id"));
+        WebElement divTag = driver.findElement(By.cssSelector("#test-id"));
         assertThat(divTag.getText(), equalTo("initial"));
         driver.findElement(By.tagName("html")).sendKeys(someKeys);
         assertThat(divTag.getText(), equalTo("new"));
     }
-    
+
 }

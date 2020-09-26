@@ -22,7 +22,7 @@ public class TestFindElement extends TestBase {
     @Before
     public void before() throws Exception {
         openPage(Page.FIRST);
-        waitUntilElementIsPresent(By.id("test-id"));
+        waitUntilElementIsPresent(By.cssSelector("#test-id"));
     }
 
     @Features("Finding element by CSS selector")
@@ -39,7 +39,7 @@ public class TestFindElement extends TestBase {
     @Test
     public void testFindById() throws Exception {
         WebDriver driver = getDriver();
-        List<WebElement> elementsById = driver.findElements(By.id("test-id"));
+        List<WebElement> elementsById = driver.findElements(By.cssSelector("#test-id"));
         assertThat(elementsById, hasSize(1));
         assertThat(elementsById.get(0).getTagName(), equalToIgnoringCase("div"));
         assertThat(elementsById.get(0).getText(), equalTo("foo"));
@@ -54,7 +54,7 @@ public class TestFindElement extends TestBase {
         assertThat(elementsByClass.get(0).getTagName(), equalToIgnoringCase("span"));
         assertThat(elementsByClass.get(0).getText(), equalTo("bar"));
     }
-    
+
     @Features("Finding element by XPath expression")
     @Test
     public void testFindByXPath() throws Exception {
@@ -64,5 +64,5 @@ public class TestFindElement extends TestBase {
         assertThat(elementsByXPath.get(0).getTagName(), equalToIgnoringCase("span"));
         assertThat(elementsByXPath.get(0).getText(), equalTo("bar"));
     }
-    
+
 }

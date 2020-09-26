@@ -16,7 +16,7 @@ public class TestTimeouts extends TestBase {
     @Before
     public void before() throws Exception {
         openPage(Page.FIRST);
-        waitUntilElementIsPresent(By.id("test-id"));
+        waitUntilElementIsPresent(By.cssSelector("#test-id"));
     }
 
     @Features("Setting page load timeout")
@@ -30,7 +30,7 @@ public class TestTimeouts extends TestBase {
             fail("Setting page load timeout is not supported", e);
         }
     }
-    
+
     @Features("Setting implicit timeout")
     @Test
     public void testImplicitTimeout() throws Exception {
@@ -41,7 +41,7 @@ public class TestTimeouts extends TestBase {
             fail("Implicitly waiting is not supported", e);
         }
     }
-    
+
     @Features("Setting script execution timeout")
     @Test
     public void testScriptTimeout() throws Exception {

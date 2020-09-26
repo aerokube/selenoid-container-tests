@@ -18,7 +18,7 @@ public class TestDrag extends TestBase {
     @Before
     public void before() throws Exception {
         openPage(Page.DRAG);
-        waitUntilElementIsPresent(By.id("custom-handle"));
+        waitUntilElementIsPresent(By.cssSelector("#custom-handle"));
     }
 
     @Features("Drag functionality")
@@ -26,7 +26,7 @@ public class TestDrag extends TestBase {
     public void testDrag() throws Exception {
         try {
             WebDriver driver = getDriver();
-            WebElement button = driver.findElement(By.id("custom-handle"));
+            WebElement button = driver.findElement(By.cssSelector("#custom-handle"));
             assertThat(button.getText(), equalTo("10"));
 
             Actions drag = new Actions(driver);

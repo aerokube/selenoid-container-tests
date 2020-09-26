@@ -13,12 +13,12 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 public class TestCookies extends TestBase {
-    
+
 
     @Before
     public void before() throws Exception {
         openPage(Page.FIRST);
-        waitUntilElementIsPresent(By.id("test-id"));
+        waitUntilElementIsPresent(By.cssSelector("#test-id"));
     }
 
     @Features("Working with cookies")
@@ -39,5 +39,5 @@ public class TestCookies extends TestBase {
             fail("Cookies are not supported", e);
         }
     }
-    
+
 }
