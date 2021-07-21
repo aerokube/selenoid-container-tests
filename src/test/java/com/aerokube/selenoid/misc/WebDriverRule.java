@@ -64,6 +64,7 @@ public class WebDriverRule implements TestRule {
             case CHROME:
                 ChromeOptions chromeOptions = new ChromeOptions();
                 chromeOptions.addArguments("no-sandbox");
+                chromeOptions.addArguments("disable-gpu");
                 chromeOptions.setCapability("screenResolution", "1280x1024x24");
                 return chromeOptions;
             case YANDEX:
