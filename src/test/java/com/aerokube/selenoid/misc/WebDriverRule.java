@@ -68,7 +68,7 @@ public class WebDriverRule implements TestRule {
                 return chromeOptions;
             case YANDEX:
                 ChromeOptions yandexOptions = new ChromeOptions();
-                yandexOptions.setBinary("/usr/bin/yandex-browser-beta");
+                yandexOptions.setBinary("/usr/bin/yandex-browser");
                 yandexOptions.addArguments("no-sandbox");
                 yandexOptions.setCapability("screenResolution", "1280x1024x24");
                 return yandexOptions;
